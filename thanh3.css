@@ -1,0 +1,702 @@
+/* ==========================================================================
+   1. BASE (NỀN TẢNG: CSS VARIABLES, RESET & TYPOGRAPHY)
+   ========================================================================== */
+:root {
+    /* Color Palette */
+    --primary-color: #007bff;
+    --primary-hover: #0056b3;
+    --primary-glow: rgba(0, 123, 255, 0.7);
+    --primary-glow-fade: rgba(0, 123, 255, 0);
+    
+    --bg-color: #f4f7f6;
+    --card-bg: #ffffff;
+    --white: #ffffff;
+    --dark-bg: #1a1a1a;
+    
+    --text-color: #333333;
+    --text-light: #4b5563; /* Cải thiện độ tương phản (contrast) đạt chuẩn WCAG AA */
+    --text-muted: #dddddd;
+    
+    --border-color: #e0e0e0;
+    --overlay-dark: rgba(0, 0, 0, 0.5);
+    
+    /* Shadows */
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 4px 15px rgba(0, 0, 0, 0.1);
+    
+    /* Radii */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-pill: 10px;
+    --radius-circle: 50%;
+    
+    /* Transitions */
+    --transition-fast: 0.3s ease;
+    --transition-normal: 0.4s ease;
+}
+
+/* Reset cơ bản */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Chống tràn viền ngang ở cấp độ thẻ gốc */
+    width: 100%;
+}
+
+body {
+    /* Khắc phục lỗi Fallback Font trên iOS / iPhone 12 */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden; /* Chống vỡ khung tràn ngang trên thiết bị di động */
+    width: 100%;
+    position: relative;
+}
+
+/* ==========================================================================
+   2. LAYOUT (BỐ CỤC KHUNG TRANG: HEADER, MAIN, GRID, FOOTER)
+   ========================================================================== */
+/* Header & Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--dark-bg);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.logo {
+    color: var(--white);
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Parallax Hero Banner */
+.parallax-banner {
+    background-image: linear-gradient(var(--overlay-dark), var(--overlay-dark)), 
+                      url('banner.webp');
+    height: 350px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--white);
+    margin-bottom: 2rem;
+}
+
+.banner-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Khung nội dung chính (Main & Section) */
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem 1rem;
+}
+
+section {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Hệ thống lưới chia 2 cột (Gộp .two-columns và .contact-container) */
+.two-columns,
+.contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: var(--dark-bg);
+    color: var(--white);
+    font-size: 0.85rem;
+    margin-top: 2rem;
+}
+
+/* ==========================================================================
+   3. COMPONENTS (CÁC THÀNH PHẦN GIAO DIỆN)
+   ========================================================================== */
+
+/* --- 3.1. Hamburger Menu --- */
+#menu-toggle {
+    display: none;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 28px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.hamburger .bar {
+    height: 3px;
+    width: 100%;
+    background-color: var(--white);
+    border-radius: 2px;
+    transition: all var(--transition-normal);
+}
+
+/* --- 3.2. Typing Effect --- */
+.typing-container {
+    display: inline-block;
+}
+
+.typing-text {
+    font-size: 1.3rem;
+    font-family: monospace;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid var(--primary-color);
+    width: 0;
+    animation: typing 3.5s steps(28, end) forwards,
+               blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--primary-color); }
+}
+
+/* --- 3.3. Flip Card --- */
+.flip-card-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.flip-card {
+    background-color: transparent;
+    width: 300px;
+    height: 320px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.flip-card-front {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-radius: var(--radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.avatar-img {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-circle);
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    display: block;
+}
+
+.flip-card-front .role {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-top: 0.2rem;
+}
+
+.flip-card-front .hint {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 1rem;
+}
+
+.flip-card-back {
+    background-color: var(--primary-color);
+    color: var(--white);
+    transform: rotateY(180deg);
+}
+
+.flip-card-back h3 {
+    margin-bottom: 1rem;
+}
+
+.flip-card-back p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* --- 3.4. Skill Bars --- */
+.skills-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.skill-info {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.progress-line {
+    height: 10px;
+    width: 100%;
+    background-color: var(--border-color);
+    border-radius: var(--radius-pill);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-line span {
+    height: 100%;
+    position: absolute;
+    border-radius: var(--radius-pill);
+    background-color: var(--primary-color);
+    animation: fillBars 2s cubic-bezier(1, 0, 0.5, 1) forwards;
+}
+
+.progress-line.html span { width: 90%; }
+.progress-line.css span { width: 85%; }
+.progress-line.js span { width: 75%; }
+.progress-line.responsive span { width: 88%; }
+
+@keyframes fillBars {
+    from { width: 0%; }
+}
+
+/* --- 3.5. Project & Timeline Cards --- */
+.project-card,
+.timeline-item {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.project-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.item-title {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.item-time {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+}
+
+/* --- 3.6. Buttons --- */
+.btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    transition: background var(--transition-fast);
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-light {
+    background-color: var(--white);
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 0.6rem;
+}
+
+/* --- 3.7. Contact Form --- */
+.contact-info {
+    list-style: none;
+}
+
+.contact-info li {
+    margin-bottom: 0.8rem;
+}
+
+.contact-sub-title {
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+}
+
+.form-group {
+    margin-bottom: 0.8rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+}
+
+/* --- 3.8. Floating Action Button (FAB) --- */
+.fab-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: var(--radius-circle);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    box-shadow: var(--shadow-md);
+    z-index: 1000;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    animation: pulse 2s infinite;
+}
+
+.fab-btn:hover {
+    background-color: var(--primary-hover);
+    transform: scale(1.1);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 var(--primary-glow);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 15px var(--primary-glow-fade);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 var(--primary-glow-fade);
+    }
+}
+
+/* ==========================================================================
+   4. UTILITIES (CÁC LỚP TIỆN ÍCH DÙNG CHUNG)
+   ========================================================================== */
+.full-width {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-light {
+    color: var(--text-light);
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+/* ==========================================================================
+   5. RESPONSIVE DESIGN (TỐI ƯU CHO MOBILE & IPHONE 12)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* 1. KHẮC PHỤC LỖI ẢNH BỊ MÉO / PHÓNG TO TRÊN IOS SAFARI (IPHONE 12) */
+    .parallax-banner {
+        background-attachment: scroll; /* iOS Safari không hỗ trợ tốt fixed attachment */
+        height: 270px;
+    }
+
+    .banner-content h1 {
+        font-size: 1.9rem;
+    }
+
+    /* 2. KHẮC PHỤC LỖI VỠ KHUNG TRÀN VIỀN NGANG DO TYPING EFFECT */
+    .typing-text {
+        font-size: 0.95rem; /* Vừa vặn hoàn hảo trên màn hình bề rộng 390px của iPhone 12 */
+    }
+
+    /* 3. RESPONSIVE NAVBAR & HAMBURGER MENU */
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--dark-bg);
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--transition-normal) ease-in-out;
+    }
+
+    #menu-toggle:checked ~ .nav-links {
+        max-height: 450px; /* Tăng chiều cao để không bị cắt xén các mục menu */
+    }
+
+    /* Hiệu ứng chuyển đổi Hamburger thành dấu X */
+    #menu-toggle:checked ~ .hamburger .bar:nth-child(1) {
+        transform: translateY(8.5px) rotate(45deg);
+    }
+
+    #menu-toggle:checked ~ .hamburger .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    #menu-toggle:checked ~ .hamburger .bar:nth-child(3) {
+        transform: translateY(-8.5px) rotate(-45deg);
+    }
+
+    /* 4. KHẮC PHỤC THẺ VÀ KHUNG KHÔNG BỊ TRÀN VIỀN */
+    main {
+        padding: 0 0.8rem 2rem 0.8rem;
+    }
+
+    section {
+        padding: 1.2rem 1rem;
+    }
+
+    .flip-card {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    /* 5. KHẮC PHỤC NÚT FAB CHE NỘI DUNG / CHE NÚT FORM TRÊN IPHONE 12 */
+    .fab-btn {
+        width: 52px;
+        height: 52px;
+        bottom: 20px;
+        right: 18px;
+        font-size: 11px;
+    }
+
+    /* 6. RESPONSIVE GRID SYSTEM (GỘP CHUNG .two-columns & .contact-container) */
+    .two-columns,
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Đảm bảo Toast Notification vừa vặn trên màn hình di động */
+    .greeting-toast {
+        top: 75px;
+        right: 15px;
+        left: 15px;
+        max-width: none;
+    }
+}
+
+/* ==========================================================================
+   7. TOAST NOTIFICATION (THÔNG BÁO CHÀO MỪNG THEO THỜI GIAN THỰC)
+   ========================================================================== */
+.greeting-toast {
+    position: fixed;
+    top: 85px;
+    right: 25px;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--card-bg);
+    color: var(--text-color);
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-left: 5px solid var(--primary-color);
+    max-width: 380px;
+    opacity: 0;
+    transform: translateY(-20px) scale(0.96);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.greeting-toast.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.greeting-toast.hide {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.95);
+    pointer-events: none;
+}
+
+.toast-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.toast-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.toast-time {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: rgba(0, 123, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+}
+
+.toast-message {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    line-height: 1.45;
+    margin: 0;
+}
+
+.toast-close {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 6px;
+    transition: color var(--transition-fast);
+}
+
+.toast-close:hover {
+    color: var(--text-color);
+}
