@@ -1,140 +1,155 @@
-# Giải Thích Chi Tiết Logic Thông Báo Chào Mừng Theo Thời Gian Thực
+# Giải Thích Logic Mã Nguồn JavaScript: Lời Chào Thời Gian Thực & Sinh Giao Diện Bằng Vòng Lặp
 
-Tài liệu này giải thích chi tiết về nguyên lý hoạt động, cấu trúc mã nguồn và logic thuật toán được sử dụng để hiển thị thông báo chào mừng người dùng dựa trên thời gian thực trong trang web `thanh3.html`.
-
----
-
-## 1. Tổng Quan Mục Tiêu & Cơ Chế Hoạt Động
-
-Khi người dùng truy cập vào trang web, hệ thống tự động:
-1. Đọc thời gian hiện tại từ thiết bị của người dùng (Client-side System Time).
-2. Trích xuất chỉ số giờ (`0` đến `23`).
-3. Dùng câu lệnh điều kiện (`if...else if...else`) để đối chiếu giờ với các khung thời gian tương ứng trong ngày.
-4. Hiển thị thông điệp chào mừng phù hợp (Chào buổi sáng, Chào buổi chiều, hoặc Chào buổi tối) kèm biểu tượng và thời gian chi tiết.
+Tài liệu này giải thích chi tiết và mạch lạc hai chức năng JavaScript quan trọng được tích hợp vào trang web `thanh3.html`.
 
 ---
 
-## 2. Tìm Hiểu Hàm `new Date().getHours()`
+## PHẦN 1: THÔNG BÁO CHÀO MỪNG THEO THỜI GIAN THỰC (IF...ELSE)
 
-### 2.1. Đối tượng `Date` trong JavaScript
-Trong JavaScript, đối tượng `Date` đại diện cho một mốc thời điểm duy nhất trên trục thời gian. Khi ta khởi tạo:
-
+### 1. Mã nguồn thực thi
 ```javascript
-const now = new Date();
-```
+function showGreeting() {
+    // 1. Lấy giờ hệ thống của thiết bị (từ 0 đến 23)
+    const hour = new Date().getHours();
+    let message = "";
 
-Trình duyệt sẽ tạo ra một thể hiện (`instance`) chứa toàn bộ thông tin ngày, tháng, năm, giờ, phút, giây tại thời điểm câu lệnh được thực thi. Thông tin này được lấy từ **đồng hồ hệ thống của thiết bị người dùng**.
+    // 2. Cấu trúc if...else phân loại lời chào
+    if (hour >= 5 && hour < 12) {
+        message = "Chào buổi sáng! Chúc bạn một ngày mới tràn đầy năng lượng!";
+    } else if (hour >= 12 && hour < 18) {
+        message = "Chào buổi chiều! Chúc bạn làm việc thật hiệu quả!";
+    } else {
+        message = "Chào buổi tối! Chúc bạn có thời gian nghỉ ngơi thư giãn!";
+    }
 
-### 2.2. Phương thức `.getHours()`
-Phương thức `.getHours()` là một phương thức tích hợp sẵn của đối tượng `Date`. 
+    // 3. Hiển thị Toast
+    const toast = document.createElement("div");
+    toast.className = "greeting-toast show";
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-* **Cú pháp:** `now.getHours()`
-* **Giá trị trả về:** Một số nguyên (integer) nằm trong khoảng từ `0` đến `23`, tương ứng với chuẩn thời gian 24 giờ.
-
-| Giá trị trả về | Mốc thời gian thực tế |
-| :--- | :--- |
-| `0` | 00:00 - 00:59 (Nửa đêm / 12 AM) |
-| `1` - `4` | 01:00 - 04:59 (Đêm muộn / Rạng sáng) |
-| `5` - `11` | 05:00 - 11:59 (Buổi sáng) |
-| `12` - `17` | 12:00 - 17:59 (Buổi chiều) |
-| `18` - `23` | 18:00 - 23:59 (Buổi tối) |
-
-> **Lưu ý chuyên môn:** `.getHours()` trả về giờ theo múi giờ cục bộ (Local Time) của máy người dùng, giúp thông điệp luôn chính xác với ngữ cảnh vị trí địa lý của họ mà không cần xử lý qua máy chủ.
-
----
-
-## 3. Cấu Trúc Câu Lệnh Điều Kiện (`if...else if...else`)
-
-Để phân loại lời chào theo 3 khung giờ yêu cầu:
-1. **05:00 - 11:59**: Chào buổi sáng!
-2. **12:00 - 17:59**: Chào buổi chiều!
-3. **18:00 - 04:59**: Chào buổi tối!
-
-Chúng ta xây dựng cấu trúc rẽ nhánh như sau:
-
-```javascript
-let greeting = "";
-
-if (currentHour >= 5 && currentHour < 12) {
-    // Nhánh 1: Từ 5h00 đến 11h59 (currentHour: 5, 6, 7, 8, 9, 10, 11)
-    greeting = "Chào buổi sáng!";
-} else if (currentHour >= 12 && currentHour < 18) {
-    // Nhánh 2: Từ 12h00 đến 17h59 (currentHour: 12, 13, 14, 15, 16, 17)
-    greeting = "Chào buổi chiều!";
-} else {
-    // Nhánh 3: Các giờ còn lại: từ 18h00 tối đến 04h59 sáng hôm sau
-    // (currentHour: 18..23 hoặc 0..4)
-    greeting = "Chào buổi tối!";
+    setTimeout(() => toast.remove(), 4000);
 }
 ```
 
-### 3.1. Phân tích chi tiết từng nhánh điều kiện
-
-#### Nhánh 1: `currentHour >= 5 && currentHour < 12`
-* **Toán tử so sánh:**
-  * `currentHour >= 5`: Đảm bảo mốc thời gian bắt đầu từ 5:00.
-  * `currentHour < 12`: Giờ nhỏ hơn 12, nghĩa là giá trị giờ tối đa của nhánh này là 11 (tương ứng với 11:59:59).
-* **Toán tử logic `&&` (AND):** Bắt buộc cả hai vế so sánh phải cùng trả về `true`. Khi đồng hồ điểm từ `5` đến `11`, khối lệnh này sẽ thực thi.
-
-#### Nhánh 2: `currentHour >= 12 && currentHour < 18`
-* Do nhánh 1 đã loại trừ các giá trị nhỏ hơn 12, nhánh này tiếp tục kiểm tra xem giờ có nằm trong đoạn từ 12 đến trước 18 hay không.
-* `currentHour < 18` bao phủ tất cả thời gian đến hết 17:59:59.
-* Khi thỏa mãn, hệ thống gán lời chào buổi chiều.
-
-#### Nhánh 3: Khối `else` (Mệnh đề mặc định)
-* Mốc thời gian ban đêm bắc qua ranh giới nửa đêm: từ 18h tối hôm nay đến 4h59 sáng hôm sau (`currentHour` nhận các giá trị `18, 19, 20, 21, 22, 23` hoặc `0, 1, 2, 3, 4`).
-* Nhờ vào tính chất loại trừ tuần tự của chuỗi `if...else if`, bất kỳ giá trị nào không rơi vào khoảng `[5..11]` và `[12..17]` đều tự động rơi vào khối `else`.
-* Cách viết này giúp mã nguồn ngắn gọn, tối ưu hiệu năng và tránh phải viết điều kiện ghép phức tạp `(currentHour >= 18 || currentHour < 5)`.
+### 2. Chi tiết hoạt động
+* **`new Date().getHours()`**:
+  * `new Date()` khởi tạo đối tượng thời gian tại đúng thời điểm người dùng vào trang web.
+  * `.getHours()` trích xuất phần giờ dưới dạng số nguyên từ `0` đến `23`.
+* **Cấu trúc rẽ nhánh `if...else if...else`**:
+  * `hour >= 5 && hour < 12`: Đoạn giờ từ 5:00 đến trước 12:00 (tối đa 11:59:59) -> Chào buổi sáng.
+  * `hour >= 12 && hour < 18`: Đoạn giờ từ 12:00 đến trước 18:00 (tối đa 17:59:59) -> Chào buổi chiều.
+  * `else`: Các giờ còn lại (`18..23` và `0..4`) bắc qua ranh giới nửa đêm -> Chào buổi tối.
 
 ---
 
-## 4. Cơ Chế Hiển Thị Giao Diện (UI/UX)
+## PHẦN 2: TỰ ĐỘNG SINH DANH SÁCH SẢN PHẨM / DỊCH VỤ (VÒNG LẶP FOR / WHILE)
 
-Thay vì chỉ sử dụng hàm `alert()` (gây gián đoạn luồng người dùng và giao diện thô ráp), mã nguồn được thiết kế theo tiêu chuẩn công nghiệp với **Toast Notification**:
+### 1. Tại sao không nên viết HTML tĩnh cho từng sản phẩm?
+* Khi có nhiều sản phẩm, nếu viết HTML thủ công cho từng mục sẽ khiến mã nguồn bị trùng lặp, cồng kềnh và rất khó bảo trì.
+* Trong thực tế, dữ liệu thường được lấy từ API hoặc cơ sở dữ liệu dưới dạng mảng các đối tượng (`Array of Objects`). Sử dụng vòng lặp trong JavaScript giúp **tách bạch giữa dữ liệu (Data) và giao diện (View)**.
 
-1. **Khởi chạy an toàn với `DOMContentLoaded`:** 
-   Đảm bảo toàn bộ cây DOM của trang web đã tải xong trước khi mã script tiến hành tạo hoặc chèn phần tử giao diện, loại bỏ hoàn toàn rủi ro lỗi `null element`.
-2. **Tạo phần tử động (Dynamic DOM Creation):** 
-   JavaScript tự tạo khối `div.greeting-toast` và chèn vào trang, không làm ảnh hưởng đến cấu trúc HTML gốc.
-3. **Hiệu ứng mượt mà (Smooth Animation):**
-   * Sử dụng `@keyframes slideInDown` để trượt từ trên xuống.
-   * Tự động biến mất sau một khoảng thời gian nhất định (ví dụ: 5 giây) hoặc cho phép người dùng chủ động đóng bằng nút bấm `×`.
-4. **Tương thích hoàn toàn với hệ thống CSS Tokens:**
-   Sử dụng biến CSS có sẵn trong `thanh3.css` như `--card-bg`, `--primary-color`, `--shadow-lg`, `--radius-md` để đồng bộ giao diện.
-
----
-
-## 5. Tóm Tắt Luồng Chạy (Flowchart)
-
-```text
-[Người dùng mở trang web thanh3.html]
-                  │
-                  ▼
-         [Sự kiện DOMContentLoaded]
-                  │
-                  ▼
-         [Khởi tạo: new Date()]
-                  │
-                  ▼
-       [Lấy giờ: now.getHours()]
-                  │
-         ┌────────┴────────┐
-         │                 │
-    (5 <= h < 12)    (12 <= h < 18)
-         │                 │
-      [ĐÚNG]            [ĐÚNG]
-         │                 │
-         ▼                 ▼
-["Chào buổi sáng!"] ["Chào buổi chiều!"]
-         │                 │
-         └────────┬────────┘
-                  │ [SAI Ở CẢ 2 ĐIỀU KIỆN]
-                  ▼
-         ["Chào buổi tối!"]
-                  │
-                  ▼
-[Hiển thị Toast Notification lên màn hình]
-                  │
-                  ▼
-[Tự động mờ dần & biến mất sau 5 giây]
+### 2. Dữ liệu mẫu (Data Model)
+```javascript
+const productList = [
+    {
+        name: "Smart Color Palette App",
+        time: "Tháng 2 / 2026",
+        desc: "Ứng dụng web giúp nhà thiết kế quản lý mã màu, tùy chỉnh biến CSS trực tiếp trên trình duyệt.",
+        image: "trg.webp",
+        linkText: "Xem Source Code"
+    },
+    {
+        name: "E-commerce Landing Page",
+        time: "Tháng 1 / 2026",
+        desc: "Trang thương mại điện tử mẫu tương thích đa thiết bị (Mobile, Tablet, Desktop) với CSS Grid.",
+        image: "cau.webp",
+        linkText: "Xem Trang Trực Tuyến"
+    },
+    {
+        name: "Dịch Vụ Thiết Kế UI/UX & Web",
+        time: "Tháng 3 / 2026",
+        desc: "Dịch vụ phát triển website chuẩn SEO, tối ưu tốc độ tải trang và trải nghiệm người dùng hiện đại.",
+        image: "banner.webp",
+        linkText: "Xem Chi Tiết"
+    }
+];
 ```
+
+### 3. Cơ chế hoạt động của hàm `renderProducts()`
+
+#### Cách 1: Sử dụng vòng lặp `for` (Khuyên dùng)
+```javascript
+function renderProducts() {
+    const container = document.getElementById("product-list");
+    if (!container) return;
+
+    let htmlContent = "";
+
+    // Vòng lặp for duyệt từ phần tử đầu tiên (index = 0) đến phần tử cuối cùng
+    for (let i = 0; i < productList.length; i++) {
+        const item = productList[i];
+        
+        // Nối chuỗi HTML sử dụng Template Literals (`...`)
+        htmlContent += `
+            <div class="project-card">
+                <img src="${item.image}" alt="${item.name}" class="project-img" loading="lazy">
+                <div class="item-title">${item.name}</div>
+                <div class="item-time">${item.time}</div>
+                <p>${item.desc}</p>
+                <a href="#" class="btn">${item.linkText}</a>
+            </div>
+        `;
+    }
+
+    // Đổ toàn bộ cây giao diện vừa sinh vào container trên trang
+    container.innerHTML = htmlContent;
+}
+```
+
+* **Khởi tạo (`let i = 0`)**: Bắt đầu duyệt từ vị trí chỉ mục `0` của mảng `productList`.
+* **Điều kiện dừng (`i < productList.length`)**: Vòng lặp tiếp tục chạy chừng nào `i` còn nhỏ hơn tổng số lượng phần tử của mảng.
+* **Bước nhảy (`i++`)**: Tăng chỉ số `i` lên 1 sau mỗi lần lặp để chuyển sang phần tử tiếp theo.
+* **Truy xuất phần tử (`productList[i]`)**: Lấy ra từng đối tượng sản phẩm và đưa các thuộc tính (`name`, `desc`, `image`, v.v.) vào khuôn mẫu HTML thông qua cú pháp Template Literals (dấu backtick `` ` `` và biểu thức `${...}`).
+
+---
+
+#### Cách 2: Sử dụng vòng lặp `while`
+Nếu muốn sử dụng vòng lặp `while`, logic xử lý hoàn toàn tương đương:
+
+```javascript
+function renderProductsWhile() {
+    const container = document.getElementById("product-list");
+    if (!container) return;
+
+    let htmlContent = "";
+    let i = 0; // Bước 1: Khởi tạo biến đếm
+
+    // Bước 2: Kiểm tra điều kiện lặp
+    while (i < productList.length) {
+        const item = productList[i];
+
+        htmlContent += `
+            <div class="project-card">
+                <img src="${item.image}" alt="${item.name}" class="project-img" loading="lazy">
+                <div class="item-title">${item.name}</div>
+                <div class="item-time">${item.time}</div>
+                <p>${item.desc}</p>
+                <a href="#" class="btn">${item.linkText}</a>
+            </div>
+        `;
+
+        i++; // Bước 3: Tăng biến đếm (Bắt buộc để tránh vòng lặp vô tận)
+    }
+
+    container.innerHTML = htmlContent;
+}
+```
+
+---
+
+## 4. Tổng Kết Luồng Thực Thi
+1. Trình duyệt tải trang web `thanh3.html`.
+2. Khi sự kiện `DOMContentLoaded` phát ra:
+   * Hàm `showGreeting()` chạy -> lấy giờ qua `new Date().getHours()` -> dùng `if...else` chọn lời chào -> hiển thị Toast.
+   * Hàm `renderProducts()` chạy -> duyệt mảng `productList` bằng vòng lặp `for`/`while` -> tự động sinh các thẻ `.project-card` và chèn vào `<div id="product-list"></div>`.

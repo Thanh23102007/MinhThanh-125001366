@@ -1,114 +1,107 @@
-/**
- * ==============================================================================
- * GREETING NOTIFICATION SYSTEM - MINHTHANH.DEV
- * Chức năng: Tự động hiển thị lời chào theo thời gian thực dựa trên giờ hệ thống
- * ==============================================================================
- */
+// ==============================================================================
+// 1. CHỨC NĂNG CHÀO MỪNG THEO THỜI GIAN THỰC (DÙNG IF...ELSE)
+// ==============================================================================
+function showGreeting() {
+    const hour = new Date().getHours();
+    let message = "";
 
-(function () {
-    'use strict';
-
-    /**
-     * Xác định thông điệp chào mừng dựa trên giờ hệ thống
-     * @returns {Object} Thông tin lời chào gồm tiêu đề, lời nhắn, biểu tượng và giờ hiện tại
-     */
-    function getGreetingData() {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const formattedTime = `${String(hours).padStart(2, '0')}:${minutes}`;
-
-        let title = '';
-        let message = '';
-        let icon = '';
-
-        // Phân loại mốc thời gian bằng cấu trúc if...else if...else
-        if (hours >= 5 && hours < 12) {
-            // Khung giờ sáng: 05:00 -> 11:59
-            title = 'Chào buổi sáng!';
-            message = 'Chúc bạn một ngày mới tràn đầy năng lượng và làm việc hiệu quả!';
-            icon = '🌅';
-        } else if (hours >= 12 && hours < 18) {
-            // Khung giờ chiều: 12:00 -> 17:59
-            title = 'Chào buổi chiều!';
-            message = 'Chúc bạn có một buổi chiều học tập và làm việc thật năng suất!';
-            icon = '☀️';
-        } else {
-            // Khung giờ tối & đêm: 18:00 -> 04:59 sáng hôm sau
-            title = 'Chào buổi tối!';
-            message = 'Chúc bạn có những phút giây thư giãn và nghỉ ngơi thật thoải mái!';
-            icon = '🌙';
-        }
-
-        return { title, message, icon, time: formattedTime };
-    }
-
-    /**
-     * Tạo và hiển thị thông báo Toast Notification trên giao diện
-     */
-    function showGreetingToast() {
-        const greeting = getGreetingData();
-
-        // 1. Tạo container cho thông báo Toast
-        const toast = document.createElement('div');
-        toast.className = 'greeting-toast';
-        toast.setAttribute('role', 'alert');
-        toast.setAttribute('aria-live', 'polite');
-
-        // 2. Cấu trúc HTML bên trong Toast
-        toast.innerHTML = `
-            <div class="toast-icon">${greeting.icon}</div>
-            <div class="toast-content">
-                <div class="toast-header">
-                    <strong class="toast-title">${greeting.title}</strong>
-                    <span class="toast-time">${greeting.time}</span>
-                </div>
-                <p class="toast-message">${greeting.message}</p>
-            </div>
-            <button class="toast-close" type="button" aria-label="Đóng thông báo">&times;</button>
-        `;
-
-        // 3. Đưa thông báo vào DOM
-        document.body.appendChild(toast);
-
-        // Kích hoạt animation xuất hiện
-        requestAnimationFrame(() => {
-            toast.classList.add('show');
-        });
-
-        // 4. Xử lý đóng thông báo
-        const closeToast = () => {
-            toast.classList.remove('show');
-            toast.classList.add('hide');
-            toast.addEventListener('transitionend', () => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, { once: true });
-        };
-
-        // Gắn sự kiện nút đóng 'x'
-        const closeBtn = toast.querySelector('.toast-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', closeToast);
-        }
-
-        // Tự động đóng sau 5 giây (tạm dừng nếu rê chuột vào)
-        let autoCloseTimer = setTimeout(closeToast, 5000);
-
-        toast.addEventListener('mouseenter', () => {
-            clearTimeout(autoCloseTimer);
-        });
-
-        toast.addEventListener('mouseleave', () => {
-            autoCloseTimer = setTimeout(closeToast, 3000);
-        });
-    }
-
-    // Đảm bảo chạy script khi DOM đã sẵn sàng
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', showGreetingToast);
+    // Phân loại mốc thời gian bằng if...else
+    if (hour >= 5 && hour < 12) {
+        message = "Chào buổi sáng! Chúc bạn một ngày mới tràn đầy năng lượng!";
+    } else if (hour >= 12 && hour < 18) {
+        message = "Chào buổi chiều! Chúc bạn làm việc thật hiệu quả!";
     } else {
-        showGreetingToast();
+        message = "Chào buổi tối! Chúc bạn có thời gian nghỉ ngơi thư giãn!";
     }
-})();
+
+    // Hiển thị thông báo Toast lên giao diện (liên kết với thanh3.css)
+    const toast = document.createElement("div");
+    toast.className = "greeting-toast show";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // Tự biến mất sau 4 giây
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+
+// ==============================================================================
+// 2. CHỨC NĂNG HIỂN THỊ DANH SÁCH SẢN PHẨM / DỊCH VỤ (DÙNG VÒNG LẶP FOR / WHILE)
+// ==============================================================================
+
+// Mảng chứa danh sách dữ liệu mẫu sản phẩm / dịch vụ
+const productList = [
+    {
+        name: "Smart Color Palette App",
+        time: "Tháng 2 / 2026",
+        desc: "Ứng dụng web giúp nhà thiết kế quản lý mã màu, tùy chỉnh biến CSS trực tiếp trên trình duyệt.",
+        image: "trg.webp",
+        linkText: "Xem Source Code"
+    },
+    {
+        name: "E-commerce Landing Page",
+        time: "Tháng 1 / 2026",
+        desc: "Trang thương mại điện tử mẫu tương thích đa thiết bị (Mobile, Tablet, Desktop) với CSS Grid.",
+        image: "cau.webp",
+        linkText: "Xem Trang Trực Tuyến"
+    },
+    {
+        name: "Dịch Vụ Thiết Kế UI/UX & Web",
+        time: "Tháng 3 / 2026",
+        desc: "Dịch vụ phát triển website chuẩn SEO, tối ưu tốc độ tải trang và trải nghiệm người dùng hiện đại.",
+        image: "banner.webp",
+        linkText: "Xem Chi Tiết"
+    }
+];
+
+/**
+ * Hàm tự động sinh giao diện HTML từ mảng dữ liệu bằng vòng lặp
+ */
+function renderProducts() {
+    const container = document.getElementById("product-list");
+    if (!container) return;
+
+    let htmlContent = "";
+
+    // SỬ DỤNG VÒNG LẶP FOR:
+    for (let i = 0; i < productList.length; i++) {
+        const item = productList[i];
+        htmlContent += `
+            <div class="project-card">
+                <img src="${item.image}" alt="${item.name}" class="project-img" loading="lazy">
+                <div class="item-title">${item.name}</div>
+                <div class="item-time">${item.time}</div>
+                <p>${item.desc}</p>
+                <a href="#" class="btn">${item.linkText}</a>
+            </div>
+        `;
+    }
+
+    /* 
+    // HOẶC NẾU MUỐN DÙNG VÒNG LẶP WHILE:
+    let i = 0;
+    while (i < productList.length) {
+        const item = productList[i];
+        htmlContent += `
+            <div class="project-card">
+                <img src="${item.image}" alt="${item.name}" class="project-img" loading="lazy">
+                <div class="item-title">${item.name}</div>
+                <div class="item-time">${item.time}</div>
+                <p>${item.desc}</p>
+                <a href="#" class="btn">${item.linkText}</a>
+            </div>
+        `;
+        i++;
+    }
+    */
+
+    // Đổ toàn bộ HTML vừa sinh tự động vào container
+    container.innerHTML = htmlContent;
+}
+
+// Khởi chạy khi DOM đã sẵn sàng
+window.addEventListener("DOMContentLoaded", () => {
+    showGreeting();
+    renderProducts();
+});
