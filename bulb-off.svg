@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="100%" height="100%">
+  <defs>
+    <!-- Gradient cho bóng thủy tinh lúc tắt -->
+    <linearGradient id="glassOff" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#e2e8f0" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#cbd5e1" stop-opacity="0.95" />
+    </linearGradient>
+
+    <!-- Gradient kim loại đui đèn -->
+    <linearGradient id="metalBase" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#64748b" />
+      <stop offset="50%" stop-color="#94a3b8" />
+      <stop offset="100%" stop-color="#475569" />
+    </linearGradient>
+
+    <linearGradient id="threadShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dây tóc bên trong (Tắt) -->
+  <g stroke="#94a3b8" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M 86 145 L 90 98" />
+    <path d="M 114 145 L 110 98" />
+    <!-- Vòng dây vonfram xoắn -->
+    <path d="M 90 98 Q 95 86 100 96 Q 105 86 110 98" stroke-width="2.5" />
+  </g>
+
+  <!-- Vỏ thủy tinh bóng đèn -->
+  <path d="M 64 142 C 46 122 40 96 40 76 C 40 38 67 12 100 12 C 133 12 160 38 160 76 C 160 96 154 122 136 142 L 132 154 L 68 154 Z"
+        fill="url(#glassOff)"
+        stroke="#94a3b8"
+        stroke-width="3"
+        stroke-linejoin="round" />
+
+  <!-- Vệt phản quang sáng trên thủy tinh -->
+  <path d="M 58 60 C 58 40 74 24 94 20"
+        stroke="#ffffff"
+        stroke-width="4.5"
+        stroke-linecap="round"
+        fill="none"
+        opacity="0.65" />
+  <circle cx="56" cy="74" r="3" fill="#ffffff" opacity="0.5" />
+
+  <!-- Đui đèn kim loại có rãnh xoắn -->
+  <rect x="74" y="154" width="52" height="9" rx="4" fill="url(#metalBase)" stroke="#475569" stroke-width="1.5" />
+  <rect x="76" y="164" width="48" height="9" rx="4" fill="url(#metalBase)" stroke="#475569" stroke-width="1.5" />
+  <rect x="80" y="174" width="40" height="9" rx="4" fill="url(#metalBase)" stroke="#475569" stroke-width="1.5" />
+
+  <!-- Điểm tiếp xúc dưới đáy đui đèn -->
+  <path d="M 88 184 Q 100 194 112 184 Z" fill="url(#threadShadow)" stroke="#0f172a" stroke-width="1" />
+</svg>

@@ -100,8 +100,112 @@ function renderProducts() {
     container.innerHTML = htmlContent;
 }
 
+// ==============================================================================
+// 3. HOẠT ĐỘNG 2: "LIGHT SWITCH" - BẬT/TẮT BÓNG ĐÈN (45 PHÚT)
+// ==============================================================================
+/**
+ * Hướng dẫn: Tạo một nút bấm và một hình ảnh cái đèn. Khi bấm nút, hình ảnh đổi từ
+ * "đèn tắt" sang "đèn sáng" bằng cách thay đổi thuộc tính src.
+ * 
+ * Prompt mẫu: "Viết mã JS để khi tôi click vào một nút có id là 'toggle-btn', nó sẽ thay đổi
+ * màu nền của body từ trắng sang đen và ngược lại (Dark mode đơn giản)."
+ */
+function initLightSwitch() {
+    const toggleBtn = document.getElementById("toggle-btn");
+    const lightBulb = document.getElementById("light-bulb");
+    const bulbStatus = document.getElementById("bulb-status");
+    const bulbRoom = document.getElementById("bulb-room");
+    const darkModeBtn = document.getElementById("darkmode-toggle-btn");
+
+    if (!toggleBtn || !lightBulb) return;
+
+    // Biến trạng thái theo dõi bóng đèn đang Bật hay Tắt (boolean)
+    let isBulbOn = false;
+
+    // Lắng nghe sự kiện click trên nút có id 'toggle-btn'
+    toggleBtn.addEventListener("click", () => {
+        // Đảo ngược trạng thái
+        isBulbOn = !isBulbOn;
+
+        if (isBulbOn) {
+            // Thay đổi thuộc tính src sang ảnh đèn sáng
+            lightBulb.src = "bulb-on.svg";
+            lightBulb.alt = "Bóng đèn đang bật sáng";
+            toggleBtn.textContent = "Tắt đèn";
+            toggleBtn.classList.add("btn-on");
+
+            if (bulbStatus) {
+                bulbStatus.textContent = "Trạng thái: Đèn đang BẬT";
+                bulbStatus.classList.add("status-on");
+            }
+            if (bulbRoom) {
+                bulbRoom.classList.add("lit");
+            }
+        } else {
+            // Thay đổi thuộc tính src sang ảnh đèn tắt
+            lightBulb.src = "bulb-off.svg";
+            lightBulb.alt = "Bóng đèn đang tắt";
+            toggleBtn.textContent = "Bật đèn";
+            toggleBtn.classList.remove("btn-on");
+
+            if (bulbStatus) {
+                bulbStatus.textContent = "Trạng thái: Đèn đang TẮT";
+                bulbStatus.classList.remove("status-on");
+            }
+            if (bulbRoom) {
+                bulbRoom.classList.remove("lit");
+            }
+        }
+    });
+
+    // Bổ trợ thực thi theo Prompt mẫu: Đổi màu nền body từ trắng sang đen (Dark mode đơn giản)
+    if (darkModeBtn) {
+        darkModeBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            darkModeBtn.textContent = isDark ? "Chế độ Sáng (Light)" : "Chế độ Dark Mode";
+        });
+    }
+}
+
+// ==============================================================================
+// 4. HOẠT ĐỘNG 3: "LIVE INPUT" - PHẢN HỒI TỨC THÌ (30 PHÚT)
+// ==============================================================================
+/**
+ * Hướng dẫn: Tạo một ô <input>. Khi người dùng gõ chữ vào ô đó, nội dung ngay lập tức
+ * xuất hiện ở một thẻ <span> bên cạnh.
+ * 
+ * Prompt mẫu: "Sử dụng sự kiện 'input' trong JavaScript để lấy giá trị từ một ô text và hiển
+ * thị nó ngay lập tức vào một thẻ h2 bên dưới."
+ */
+function initLiveInput() {
+    const liveInput = document.getElementById("live-input");
+    const liveSpan = document.getElementById("live-span");
+    const liveHeading = document.getElementById("live-heading");
+
+    if (!liveInput) return;
+
+    // Lắng nghe sự kiện 'input' kích hoạt tức thì mỗi khi giá trị ô nhập thay đổi
+    liveInput.addEventListener("input", (event) => {
+        // Lấy giá trị chuỗi văn bản từ ô text
+        const value = event.target.value.trim();
+
+        // 1. Hiển thị ngay lập tức vào thẻ <span> bên cạnh (theo Hướng dẫn)
+        if (liveSpan) {
+            liveSpan.textContent = value !== "" ? value : "(Chưa nhập gì...)";
+        }
+
+        // 2. Hiển thị ngay lập tức vào thẻ <h2> bên dưới (theo Prompt mẫu)
+        if (liveHeading) {
+            liveHeading.textContent = value !== "" ? value : "Tiêu đề trực tiếp sẽ hiển thị ở đây";
+        }
+    });
+}
+
 // Khởi chạy khi DOM đã sẵn sàng
 window.addEventListener("DOMContentLoaded", () => {
     showGreeting();
     renderProducts();
+    initLightSwitch();
+    initLiveInput();
 });

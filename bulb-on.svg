@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="100%" height="100%">
+  <defs>
+    <!-- Vùng phát sáng tỏa tròn (Radial Glow Aura) -->
+    <radialGradient id="outerGlow" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.8" />
+      <stop offset="45%" stop-color="#facc15" stop-opacity="0.4" />
+      <stop offset="80%" stop-color="#eab308" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ca8a04" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Gradient bóng thủy tinh phát sáng rực rỡ -->
+    <radialGradient id="bulbLit" cx="45%" cy="38%" r="65%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="25%" stop-color="#fef9c3" />
+      <stop offset="65%" stop-color="#fde047" />
+      <stop offset="90%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </radialGradient>
+
+    <!-- Gradient kim loại đui đèn -->
+    <linearGradient id="metalBase" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#64748b" />
+      <stop offset="50%" stop-color="#94a3b8" />
+      <stop offset="100%" stop-color="#475569" />
+    </linearGradient>
+
+    <linearGradient id="threadShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+
+    <!-- Hiệu ứng Glow mờ -->
+    <filter id="glowFilter" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Quầng sáng lớn bao bọc quanh bóng đèn -->
+  <circle cx="100" cy="76" r="90" fill="url(#outerGlow)" />
+
+  <!-- Các tia sáng phát ra xung quanh -->
+  <g stroke="#f59e0b" stroke-width="3" stroke-linecap="round" opacity="0.85">
+    <line x1="100" y1="14" x2="100" y2="4" />
+    <line x1="42" y1="24" x2="32" y2="15" />
+    <line x1="158" y1="24" x2="168" y2="15" />
+    <line x1="18" y1="76" x2="6" y2="76" />
+    <line x1="182" y1="76" x2="194" y2="76" />
+    <line x1="34" y1="130" x2="24" y2="138" />
+    <line x1="166" y1="130" x2="176" y2="138" />
+  </g>
+
+  <!-- Dây tóc phát quang vonfram (Rực sáng cam đỏ nhiệt độ cao) -->
+  <g stroke="#f97316" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <path d="M 86 145 L 90 98" />
+    <path d="M 114 145 L 110 98" />
+    <!-- Vòng xoắn cực sáng -->
+    <path d="M 90 98 Q 95 84 100 95 Q 105 84 110 98" stroke="#ffedd5" stroke-width="3.5" filter="url(#glowFilter)" />
+  </g>
+
+  <!-- Vỏ thủy tinh bóng đèn phát sáng vàng rực -->
+  <path d="M 64 142 C 46 122 40 96 40 76 C 40 38 67 12 100 12 C 133 12 160 38 160 76 C 160 96 154 122 136 142 L 132 154 L 68 154 Z"
+        fill="url(#bulbLit)"
+        stroke="#eab308"
+        stroke-width="3"
+        stroke-linejoin="round" />
+
+  <!-- Vệt phản quang sáng bóng -->
+  <path d="M 58 60 C 58 40 74 24 94 20"
+        stroke="#ffffff"
+        stroke-width="5"
+        stroke-linecap="round"
+        fill="none"
+        opacity="0.85" />
+  <circle cx="56" cy="74" r="3.5" fill="#ffffff" opacity="0.8" />
+
+  <!-- Đui đèn kim loại -->
+  <rect x="74" y="154" width="52" height="9" rx="4" fill="url(#metalBase)" stroke="#475569" stroke-width="1.5" />
+  <rect x="76" y="164" width="48" height="9" rx="4" fill="url(#metalBase)" stroke="#475569" stroke-width="1.5" />
+  <rect x="80" y="174" width="40" height="9" rx="4" fill="url(#metalBase)" stroke="#475569" stroke-width="1.5" />
+
+  <!-- Điểm tiếp xúc dưới đáy đui đèn -->
+  <path d="M 88 184 Q 100 194 112 184 Z" fill="url(#threadShadow)" stroke="#0f172a" stroke-width="1" />
+</svg>

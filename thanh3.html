@@ -28,6 +28,7 @@
             <li><a href="#skills">Kỹ năng</a></li>
             <li><a href="#card-flip">Thẻ nhân sự</a></li>
             <li><a href="#projects">Dự án</a></li>
+            <li><a href="#js-activities">Thực hành JS</a></li>
             <li><a href="#contact">Liên hệ</a></li>
         </ul>
     </nav>
@@ -137,6 +138,52 @@
                     <div class="item-title">Sinh viên chuyên ngành CNTT</div>
                     <div class="item-time">2023 - Nay</div>
                     <p>Đang theo học các học phần về Lập trình Web nâng cao, Thiết kế Giao diện và Quản trị cơ sở dữ liệu tại trường.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- BÀI TẬP BUỔI 9: THỰC HÀNH JAVASCRIPT & DOM EVENTS -->
+        <div id="js-activities" class="two-columns">
+            <!-- Hoạt động 2: "Light Switch" - Bật/Tắt bóng đèn -->
+            <section data-aos="fade-right" data-aos-duration="800" class="activity-card" id="activity-light-switch">
+                <div class="activity-header">
+                    <span class="activity-badge badge-orange">Hoạt động 2 (45 phút)</span>
+                    <h2>"Light Switch" - Bật/Tắt bóng đèn</h2>
+                </div>
+                <p class="activity-desc">
+                    Tạo một nút bấm và một hình ảnh cái đèn. Khi bấm nút, hình ảnh đổi từ <strong>"đèn tắt"</strong> sang <strong>"đèn sáng"</strong> bằng cách thay đổi thuộc tính <code>src</code>.
+                </p>
+                <div class="bulb-stage" id="bulb-room">
+                    <img id="light-bulb" src="bulb-off.svg" alt="Bóng đèn đang tắt" class="bulb-img" width="130" height="156">
+                    <div class="bulb-status-text" id="bulb-status">Trạng thái: Đèn đang TẮT</div>
+                </div>
+                <div class="activity-controls">
+                    <!-- Nút toggle bóng đèn (có id='toggle-btn' theo đúng yêu cầu đề bài và prompt mẫu) -->
+                    <button type="button" id="toggle-btn" class="btn btn-switch">Bật đèn</button>
+                    <!-- Nút Dark Mode thực thi theo Prompt mẫu: Đổi nền body từ trắng sang đen và ngược lại -->
+                    <button type="button" id="darkmode-toggle-btn" class="btn btn-outline" title="Chuyển chế độ sáng/tối toàn trang">Chế độ Dark Mode</button>
+                </div>
+            </section>
+
+            <!-- Hoạt động 3: "Live Input" - Phản hồi tức thì -->
+            <section data-aos="fade-left" data-aos-duration="800" class="activity-card" id="activity-live-input">
+                <div class="activity-header">
+                    <span class="activity-badge badge-blue">Hoạt động 3 (30 phút)</span>
+                    <h2>"Live Input" - Phản hồi tức thì</h2>
+                </div>
+                <p class="activity-desc">
+                    Tạo một ô <code>&lt;input&gt;</code>. Khi người dùng gõ chữ, nội dung ngay lập tức xuất hiện ở thẻ <code>&lt;span&gt;</code> bên cạnh và thẻ <code>&lt;h2&gt;</code> bên dưới (sự kiện <code>input</code>).
+                </p>
+                <div class="input-activity-group">
+                    <label for="live-input" class="input-label">Nhập nội dung tương tác:</label>
+                    <div class="input-with-span-wrapper">
+                        <input type="text" id="live-input" placeholder="Gõ thử điều gì đó vào đây..." class="form-input-live">
+                        <span class="inline-span-feedback">Bên cạnh: <strong id="live-span">(Chưa có dữ liệu)</strong></span>
+                    </div>
+                </div>
+                <div class="live-preview-box">
+                    <div class="preview-box-header">Hiển thị tức thì vào thẻ &lt;h2&gt; bên dưới (Prompt mẫu):</div>
+                    <h2 id="live-heading" class="live-heading-display">Tiêu đề trực tiếp sẽ hiển thị ở đây</h2>
                 </div>
             </section>
         </div>
